@@ -39,16 +39,6 @@ hold <- apply(data,1,function(x) any(x=='AL'))
 (data$state == 'AL') == hold
 all((data$state == 'AL') == hold)
 
-#######################################################
-# Loops: For and If-Else
-# For loops have the following basic structure
-
-# for(i in ?:?){
-# 	STUFF GOES HERE
-#	}
-
-# Essentially for loops will repeat an action multiple times. Here's a simple 
-# example using the random.vector object we created earlier:
 
 set.seed(1212) #sets a random seed so the results are always the same
 random.vector <- rchisq(n = 100, df=2) #draw 100 random observations
@@ -61,6 +51,18 @@ hist(random.vector)
 
 #make a density plot
 plot(density(random.vector))
+
+#######################################################
+# Loops: For and If-Else
+# For loops have the following basic structure
+
+# for(i in ?:?){
+# 	STUFF GOES HERE
+#	}
+
+# Essentially for loops will repeat an action multiple times. Here's a simple 
+# example using the random.vector object we created earlier:
+
 New.Vector <- numeric(100)
 New.Vector
 for(i in 1:100){
@@ -87,6 +89,16 @@ sum(as.logical(New.Vector.2))
 
 
 New.Vector[as.logical(New.Vector.2)]
+
+New.Vector.2
+
+New.Vector.3 <- ifelse(random.vector<=mean(random.vector), 1, 0)
+New.Vector.2 == New.Vector.3
+
+New.Vector.4 <- as.numeric(random.vector<=mean(random.vector))
+
+New.Vector.2 == New.Vector.4
+
 
 ## to do:
 ## 1. create a loop that loops 1,000 times, and at each iteration draw 100 samples from the above chi-square distribution
