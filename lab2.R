@@ -5,7 +5,7 @@
 library(repmis)
 #key for dropbox found in middle of public link
 data <- source_DropboxData("samuels.csv",
-                   "1vean5wpfiqkr51")
+                   "1vean5wpfiqkr51")[,-1]
 
 ## or download data from github, and run...
 #library(foreign)
@@ -15,15 +15,14 @@ colnames(data)
 names(data)
 summary(data)
 
-names(data[,c(1,3:14)])
-summary(data[,c(1,3:14)])
-summary(data[,c(1,3:14)])
+names(data[,c(2:13)])
+summary(data[,c(2:13)])
+summary(data[,c(2:13)])
 
 ## apply - look at ?apply
-apply(data[,c(1,3:14)],2,sd)
-apply(data[,c(1,3:14)],2,mean)
-apply(data[,c(1,3:14)],2,function(x) mean(as.numeric(x)))
-apply(data[,3:14],2,mean)
+apply(data[,c(2:13)],2,sd)
+apply(data[,c(2:13)],2,mean)
+apply(data[,c(2:13)],2,function(x) any(x==2))
 
 data$north
 data[data$north==1,]
@@ -104,7 +103,7 @@ New.Vector[as.logical(New.Vector.2)]
 #is (black/white). Say you pull another cat out of the bag and see that it is a white cat. What is the probability that the cat in the tree is white?
 #Write a function in R simulating the situation 5000 times and have it return (roughly) the probability.
 
-#In the game show 'Let’s Make a Deal,' you get to choose one of three closed doors, and you receive the prize behind the door you choose. Behind one door is a new car; behind the other two are goats.
+#In the game show 'Let's Make a Deal,' you get to choose one of three closed doors, and you receive the prize behind the door you choose. Behind one door is a new car; behind the other two are goats.
 #After you select one of the 3 doors, the host opens one of the other two doors, and reveals a goat. (Note: the host will always open another door, and the door will always reveal a                                                                                                                                                                                                                                                                                                           goat. The probability of the host opening another door that reveals the car equals zero. They’re not going to give the car away that easily!) Now, you have the option of either sticking with the
 #door you originally selected, or switching to the only other door that is still closed. What should you do, and why? What are your probabilities of winning the car if you stay versus if you switch?
 #Write a function to simulate this game under the two conditions (stay or switch), and play the game at least 1000 times under each condition. Use your results to answer the questions above.
