@@ -1,0 +1,52 @@
+## create a blank R script, and save it as a .R file. Work on these questions in the .R file, saving frequently.
+## throughout, if you do not know how to do something, google first, then ask. feel free to ask for clarifying questions or questions regarding interpretation if you cannot figure it out online.
+## when an error is received, google the error, try to figure out why you received the error.
+## There are different tiers. If you cannot do the basic tier, focus on this for the day. Otherwise look ahead and see what you think you can accomplish. Feel free to skip things that are too easy or too hard.
+## We will discuss in the last 5-10 minutes.
+
+##### Basic Tier #####
+## download the samuels data from https://github.com/carlson9/QPM_Fall2015 or from blackboard lab 2 folder.
+## summarize the variables (just have the code in your .R file, don't bother writing down the results).
+## create histograms and density plots of a few variables and make titles that are different from the defaults. Try changing axis labels as well.
+
+##### Tier 1 ####
+## download and load the package faraway
+## load the data named divusa
+## explore the data with the help files
+## plot female labor participation on year, divorce rate on year, marriage rate on year, and birth rate on marriage rate, while creating meaningful titles and axis labels
+## are there any apparent trends? What are some possible explanations?
+## pick some of these variables and see if they are distributed normally using quantile-quantile plots
+## add a Q-Q line to one of these plots
+## treat the observations of divorce rates pre-1960 as one distribution and post-1960 as another. Use a 2-sample t-test to determine if the sample means are statistically distinguishable.
+
+#### Tier 2a ####
+## simulate data from different normal distributions
+## create quantile-quantile plots on the ditributions with normal as the baseline
+## add a line of the theoretical distribution to each plot
+## explain what these are doing
+## plot the pdf of the distributions you drew from, and plot the density of your draws on that pdf with a dashed line
+## use 1-sample t-tests to determine if the simulated data have a statistically distinguishable mean from the target distribution
+## do shapiro-wilks tests on the simulated data
+## interpret the results
+## in the hypothetical distribution, at what values would the z-score equal 2?
+## what percentage of your simulated data fall at these values or more extreme?
+
+#### Tier 2b - plotting practice ####
+## plot a pdf of any normal
+## draw a verticle line at two standard deviations above the mean
+## shade the tail from the line onward
+## calculate the probability of drawing from this tail
+
+#### very advanced tier ####
+
+## Sampling distributions and p-values
+## 1. Make a three dimensional array with dim=c(20,5, 1000) and fill it with random data. Think of this as 1000 random datasets with 20 observations and 5 covariates
+## 2. Here is the vector of covariates
+##    Beta <- matrix(c(1,2,0,4,0), ncol=1)
+##    Make a function to create Y values (for a linear model). The Y-values should be a linear combination of the X’s plus some normally distributed error. The output should be a 20 by 1000 array.
+## 3. Run 1,000 regressions across all of this simulated data. Have as the output a 1000 by 6 matrix of estimated regression coefficients.
+## 4. Create a density plot for each of the 6 coefficients (each of which should have been estimated 1,000 times). What does this distribution represent?
+## 5. Alter your code so that you now collect t-statistics for all 1,000 regressions for all six coefficients.
+## 6. For the 1,000 regressions, calculate how many t-statistics are statistically "significant" (p≤.05) for each variable. (Make sure you use the right degrees of freedom). Discuss.
+## 7. Re-run that code in parallel. Using the system.time command, estimate how much time is saved (or not) using the parallel code.
+
