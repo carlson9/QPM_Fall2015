@@ -1,0 +1,31 @@
+#Remember to load a package to access the data in that package, installing the package if needed. There are help files on the following datasets with an explanation of the variables. Use the help files. The goal is to familiarize you with using datasets and running linear regressions.
+
+
+#The dataset teengamb in the faraway package concerns a study of teenage gambling in Britain. Fit a regression model with the expenditure on gambling as the response and the sex, status, income and verbal score as predictors, storing the output as an object. Interpret the output. Are any estimates significant?
+
+#The dataset Anscombe in the car package has data on U.S. state public-school expenditures. Regress education on income, proportion of population under 18, and proportion of urban population, storing the output as an object. Interpret the output. Are any estimates significant?
+
+#The Leinhardt data frame (in car) has data on infant mortality. Regress infant mortality on income, storing the output as an object. Interpret the output. Are any estimates significant?
+#Plot the data, with the y-axis mortality rates and the x-axis income. Add a line to the model from your model.
+#Now do the same, but use the log of income. Which plot seems more "linear?"
+#Now include oil as an independent variable. Interpret the output.
+
+
+### Advanced ###
+
+#Consider the general multiple-regression sample equation
+#Y = B0 + B1*X1 + . . . + Bk*Xk + e
+#An alternative procedure for calculating the least-squares coefficient B1 is as follows:
+#(1) Regress Y on X2 through Xk , obtaining residuals e (Y|2...k)
+#(2) Regress X1 on X2 through Xk , obtaining residuals e (1|2...k)
+#(3) Regress the residuals e (Y|2...k) on the residuals e (1|2...k). The slope for this simple regression is the multiple-regression slope for X1 , that is, B1
+
+#(a) Apply this procedure to the data in Anscombe (car library). Perform a multiple regression of state education expenditures on income, proportion under 19, and proportion urban. Then use the procedure outlined above to confirm that the coefficient for
+income is properly recovered.
+#(b) Notice that the intercept for the simple regression in step 3 is 0.  Why is this the case?
+#(c) In light of this procedure, is it reasonable to describe B1 as the effect of X1 on Y when the influence of X2,...,Xk is removed from both X1 and Y?
+#(d) The procedure in this problem reduces the multiple regression to a series of simple regressions (in step 3).  Can you see any practical application for this procedure?
+
+
+### Very Advanced ###
+#Go to the website www.stat.wvu.edu/SRS/Modules/CI/cholesterol.html and take a look at the "confidence interval applet" therein. Write an R function that takes as input user- defined values for mu, n, sigma, and alpha and returns 100 realizations of confidence intervals. In other words, write R code to replicate what the applet does.
