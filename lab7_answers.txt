@@ -1,0 +1,106 @@
+#Remember to load a package to access the data in that package, installing the package if needed. There are help files on the following datasets with an explanation of the variables. Use the help files. The goal is to familiarize you with using datasets and running linear regressions.
+
+
+#The dataset teengamb in the faraway package concerns a study of teenage gambling in Britain. Fit a regression model with the expenditure on gambling as the response and the sex, status, income and verbal score as predictors, storing the output as an object. Interpret the output. Are any estimates significant? What are the confidence intervals for each estimate?
+
+library(faraway)
+?teengamb
+data(teengamb)
+model1 <- lm(gamble ~ sex + status + income + verbal, data = teengamb)
+summary(model1)
+confint(model1)
+
+#For all other predictors held constant, what would be the difference in predicted expenditure on gambling for a male compared to a female?
+
+coefficients(model1)[2]
+## teengamb$sex
+## -22.12
+
+#The dataset Anscombe in the car package has data on U.S. state public-school expenditures. Regress education on income, proportion of population under 18, and proportion of urban population, storing the output as an object. Interpret the output. Are any estimates significant? What are the confidence intervals for each estimate?
+
+library(car)
+data(Anscombe)
+model2 <- lm(education ~ income + young + urban, data = Anscombe)
+summary(model2)
+confint(model2)
+
+#The Leinhardt data frame (in car) has data on infant mortality. Regress infant mortality on income, storing the output as an object. Interpret the output. Are any estimates significant?
+
+#Plot the data, with the y-axis mortality rates and the x-axis income. Add a line to the model from your model.
+
+#Now do the same, but use the log of income. Which plot seems more "linear?"
+
+#Now include oil as an independent variable. Interpret the output.
+
+library(car)
+model3 <- lm(infant ~ income, data=Leinhardt)
+summary(model3)
+plot(infant ~ income, data=Leinhardt)
+abline(model3)
+model4 <- lm(infant ~ log(income), data=Leinhardt)
+summary(model4)
+plot(infant ~ log(income), data=Leinhardt)
+abline(model4)
+model5 <- lm(infant ~ income + oil, data=Leinhardt)
+summary(model5)
+
+
+### Advanced ###
+
+#Consider the general multiple-regression sample equation
+#Y = B0 + B1*X1 + . . . + Bk*Xk + e
+#An alternative procedure for calculating the least-squares coefficient B1 is as follows:
+#(1) Regress Y on X2 through Xk , obtaining residuals e (Y|2...k)
+#(2) Regress X1 on X2 through Xk , obtaining residuals e (1|2...k)
+#(3) Regress the residuals e (Y|2...k) on the residuals e (1|2...k). The slope for this simple regression is the multiple-regression slope for X1 , that is, B1
+
+#(a) Apply this procedure to the data in Anscombe (car library). Perform a multiple regression of state education expenditures on income, proportion under 19, and proportion urban. Then use the procedure outlined above to confirm that the coefficient for
+income is properly recovered.
+
+library(car)
+data(Anscombe)
+model <- lm(education ~ income + young + urban, data = Anscombe)
+model.1 <- lm(education ~ young + urban, data = Anscombe)
+model.2 <- lm(income ~ young + urban, data = Anscombe)
+coef.final <- lm(resid(model.1) ~ resid(model.2))
+
+#(b) Notice that the intercept for the simple regression in step 3 is 0.  Why is this the case?
+
+#The intercept of the simple regression is effectively 0 because, by virtue of the estimation procedure, the residuals of the linear model have mean zero. This is different from the assumption that the expected value of the error term is zero, however, so keep that in mind. 
+
+#(c) In light of this procedure, is it reasonable to describe B1 as the effect of X1 on Y when the influence of X2,...,Xk is removed from both X1 and Y?
+
+#Yes, because the first step results in obtaining the value of Y with the effects of X2,..., Xk taken out and the second step results in obtaining the value of X1 with the effects of X2,..., Xk taken out.  The result is that the third step which produces B1 is giving solely the effect of X1 on Y.
+
+#(d) The procedure in this problem reduces the multiple regression to a series of simple regressions (in step 3).  Can you see any practical application for this procedure?
+
+#This procedure is useful for visualizing the relationship between two variables, while holding all the other predictors constant. The resulting plot is sometimes called an "added-variable plot." In particular, when you have multiple predictors, a simple scatterplot of X and Y might reveal some observations that appear unusual, but are not so when the effect of other variables is controlled for.
+
+For example, in the case at hand Alaska (AK) seems to be an outlier in the sense that its education expenditures look higher that its income would predict. However, what actually happens is that Alaska has a much larger proportion of young people in its population, and therefore it is reasonable to expect that it will spend more on education than other states.
+
+
+### Very Advanced ###
+#Go to the website www.stat.wvu.edu/SRS/Modules/CI/cholesterol.html and take a look at the "confidence interval applet" therein. Write an R function that takes as input user- defined values for mu, n, sigma, and alpha and returns 100 realizations of confidence intervals. In other words, write R code to replicate what the applet does.
+
+applet<-function(mu=4.8,n=20,sigma=.6,alpha=.05){
+  pop<-rnorm(10000,mean=mu,sd=sigma)
+  samples<-replicate(100,sample(pop,n))
+  samples.mean<-apply(samples,2,mean)
+  samples.sd<-apply(samples,2,sd)
+  quantiles.a<-qnorm(alpha/2)*samples.sd/sqrt(n)
+  quantiles<-matrix(c(samples.mean+quantiles.a,samples.mean-quantiles.a),nrow=100,byrow=FALSE)
+  contain.mu<-sum(quantiles[,1]<=mu&quantiles[,2]>=mu)
+  par(bg="black")
+  par(col.axis="white")
+  par(col.lab="white")
+  plot(samples.mean,y=1:100,pch=19,cex=.5,col="red",xlim=c(min(quantiles[,1]),max(quantiles[,2])),yaxt="n",ylab="",xlab="Sample Means")
+  axis(1,col="white")
+  abline(v=mu,col="red")
+  for(i in 1:100){
+    lines(x=c(quantiles[i,1],quantiles[i,2]),y=c(i,i),col=ifelse(quantiles[i,1]<=mu&quantiles[i,2]>=mu, "blue","white"))
+  }
+  par(bg="white",col.axis="black",col.lab="black")
+  return(contain.mu)
+}
+contain.mu<-applet()
+
