@@ -1,0 +1,19 @@
+#The Leinhardt data frame (in car) has data on infant mortality. Regress infant mortality on income, storing the output as an object. Interpret the output. Are any estimates significant?
+#Plot the data, with the y-axis mortality rates and the x-axis income. Add a line to the model from your model.
+#Now do the same, but use the log of income. Which plot seems more "linear?"
+#Now include oil as an independent variable. Interpret the output.
+
+#The Leinhardt data frame (in car) has data on infant mortality. Regress infant mortality on oil and the log of income. Plot the line of best fit for when the country has oil, and a line for when it does not, distinguishing which is which by line type. Plot the confidence intervals around the lines of best fit. The following code will work:
+
+library(car)
+mod <- lm(infant ~ log(income) + oil, data=Leinhardt)
+
+preds.oil <- predict(mod, newdata = data.frame(income=Leinhardt$income, oil='yes'), interval = 'confidence')
+
+preds.no.oil <- predict(mod, newdata = data.frame(income=Leinhardt$income, oil='no'), interval = 'confidence')
+
+plot(Leinhardt$infant ~ log(Leinhardt$income), type = 'n')
+polygon(c(rev(log(Leinhardt$income)), log(Leinhardt$income)), c(rev(preds.oil[ ,3]), preds.oil[ ,2]), col = 'grey80', border = NA)
+lines(log(Leinhardt$income), preds.oil[,1])
+lines(log(Leinhardt$income), preds.oil[ ,3], lty = 'dashed', col = 'red')
+lines(log(Leinhardt$income), preds.oil[ ,2], lty = 'dashed', col = 'red')
